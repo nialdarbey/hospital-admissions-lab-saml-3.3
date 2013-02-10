@@ -1,0 +1,6 @@
+----------------------------------------------------------------
+2012-10-26 01:15:05.823 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-013a-9aa3-0495-000002fdad30 
+on database directory /Users/nialdarbey/git/Hospital Admissions/hospital_admissions_3/muleEmbeddedDB   with class loader sun.misc.Launcher$AppClassLoader@69cd2e5f
+
+Database Class Loader started - derby.database.classpath=''
