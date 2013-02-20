@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:ldap="http://www.mulesoft.org/schema/mule/ldap" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:debugger="http://www.mulesoft.org/schema/mule/debugger" xmlns:jersey="http://www.mulesoft.org/schema/mule/jersey" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<mule xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:ldap="http://www.mulesoft.org/schema/mule/ldap" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:debugger="http://www.mulesoft.org/schema/mule/debugger" xmlns:jersey="http://www.mulesoft.org/schema/mule/jersey" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
 http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd 
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd 
 http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd 
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd 
-http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd 
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd 
-http://www.mulesoft.org/schema/mule/ldap http://www.mulesoft.org/schema/mule/ldap/3.3/mule-ldap.xsd 
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd 
+http://www.mulesoft.org/schema/mule/ldap http://www.mulesoft.org/schema/mule/ldap/3.3/mule-ldap.xsd 
 http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd ">
 
 	<mulexml:namespace-manager includeConfigNamespaces="false">
-        <mulexml:namespace prefix="ep" uri="http://www.mule-health.com/HospitalInformation/"/>
+		<mulexml:namespace prefix="ep" uri="http://www.mule-health.com/HospitalInformation/" />
 	</mulexml:namespace-manager>
 	<spring:beans>
 		<spring:bean id="Derby_Data_Source" class="org.enhydra.jdbc.standard.StandardXADataSource" destroy-method="shutdown">
@@ -41,10 +42,8 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 	<data-mapper:config name="AdmissionRequest_to_HospitalCoverRequest" transformationGraphPath="admissionrequest_to_hospitalcoverrequest.grf" doc:name="DataMapper" />
 	<data-mapper:config name="EpisodeXml_to_AdmissionResponse" transformationGraphPath="episodexml_to_admissionresponse.grf" doc:name="DataMapper" />
 	<data-mapper:config name="to_Billing_CSV" transformationGraphPath="to_billing_csv.grf" doc:name="DataMapper" />
-    <jdbc-ee:oracle-data-source name="Oracle_Data_Source" user="his" password="his" url="jdbc:oracle:thin:@//localhost:1521/[instanceName]" transactionIsolation="UNSPECIFIED" doc:name="Oracle Data Source"/>
-    <jdbc-ee:connector name="Database" dataSource-ref="Oracle_Data_Source" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"/>
 	<flow name="admisssions" doc:name="admisssions">
-		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="9090" doc:name=":9090/admissions" path="admissions" />
+		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="9595" path="admissions" doc:name=":9595/admissions" />
 		<cxf:jaxws-service serviceClass="com.mulesoft.summit.adm.HospitalInformationService" doc:name="HospitalInformationService">
 			<cxf:ws-security>
 				<cxf:ws-config>
@@ -61,13 +60,14 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 		</enricher>
 		<choice doc:name="Choice">
 			<when expression="#[sessionVars.insurance.status == CoverStatusType.NOT_COVERED]">
-				<processor-chain>
+				<processor-chain doc:name="Processor Chain">
 					<set-payload value="#[with (response = new AdmissionResponse()) { status = AdmissionStatusType.NOT_ADMISSABLE }; response ]" doc:name="Rejected" />
 				</processor-chain>
 			</when>
 			<otherwise>
-				<processor-chain>
+				<processor-chain doc:name="Processor Chain">
 					<flow-ref name="admit_patient" doc:name="Admit Patient" />
+                    <logger message="XXXXX classs ==========  #[payload.class]" level="INFO" doc:name="Logger"/>
 					<data-mapper:transform config-ref="EpisodeXml_to_AdmissionResponse" doc:name="to AdmissionResponse">
 						<data-mapper:input-arguments>
 							<data-mapper:input-argument key="insuranceCaseNumber">#[sessionVars.insurance.caseNumber]</data-mapper:input-argument>
@@ -77,23 +77,45 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 				</processor-chain>
 			</otherwise>
 		</choice>
-        <catch-exception-strategy doc:name="Catch Exception Strategy">
-            <smtp:outbound-endpoint host="localhost" responseTimeout="10000" doc:name="SMTP"/>
-        </catch-exception-strategy>
+		<catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger message="EXCEPTION...." level="INFO" doc:name="Logger"/>
+		</catch-exception-strategy>
 	</flow>
+	<flow name="init_db" doc:name="init_db">
+		<http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="9797" path="init-db" doc:name="HTTP" />
+		<scripting:component doc:name="Populate table">
+			<scripting:script engine="Groovy">
+                <scripting:text><![CDATA[jdbcConnector = muleContext.getRegistry().lookupConnector("JDBCConnector");
+                qr = jdbcConnector.getQueryRunner();
+				conn = jdbcConnector.getConnection();
+				qr.update(conn, "declare global temporary table patients(patient_id varchar(256), patient_nat_id varchar(265)) not logged");
+				qr.update(conn, "insert into patients (patient_id, patient_nat_id) values ('PA1111', 'NA1111')");
+				qr.update(conn, "insert into patients (patient_id, patient_nat_id) values ('PA2222', 'NA2222')");
+				qr.update(conn, "insert into patients (patient_id, patient_nat_id) values ('PA3333', 'NA3333')");
+				return payload;]]></scripting:text>
+
+			</scripting:script>
+		</scripting:component>
+		<set-payload value="Database initialised" doc:name="Set Payload" />
+	</flow>
+
 	<sub-flow name="admit_patient" doc:name="admit_patient">
-		<enricher target="sessionVars.patientId" doc:name="Enrich with patientId" source="#[payload]">
-            <jdbc-ee:outbound-endpoint exchange-pattern="request-response" queryKey="select" queryTimeout="-1" connector-ref="Database" doc:name="select * from HIS">
-                <jdbc-ee:query key="select" value="select * from HIS where nat_id = #[payload.nationalIdNumber]"/>
+        <enricher source="#[payload[0].PATIENT_NAT_ID]" target="sessionVars.patientId" doc:name="Enrich with patientId">
+            <jdbc-ee:outbound-endpoint exchange-pattern="request-response" queryKey="select" queryTimeout="-1" connector-ref="JDBCConnector" doc:name="Find Patient Record">
+                <jdbc-ee:query key="select" value="select * from (select row_number() over() as rowNum, patients.* from patients where patient_nat_id = #[payload.nationalIdNumber]) as tmp where rowNum &lt;= 1"/>
             </jdbc-ee:outbound-endpoint>
-		</enricher>
-        <data-mapper:transform doc:name="DataMapper"/>
+        </enricher>
+		
 		<flow-ref name="invoke_ehr_web_service" doc:name="Invoke EHR Web Service" />
-		<async doc:name="Async">
+        <async doc:name="Async">
 			<expression-filter expression="#[ [PlanType.BASIC, PlanType.PREMIUM] contains sessionVars.insurance.plan ]" doc:name="Insurance Plan BASIC or PREMIUM" />
-			<flow-ref name="export_to_billing_system" doc:name="Export to Billing System" />
+            <flow-ref name="export_to_billing_system" doc:name="Export to Billing System"/>
 		</async>
+        <logger level="INFO" doc:name="Logger"/>
 	</sub-flow>
+    <sub-flow name="dummy" doc:name="dummy">
+        <logger level="INFO" doc:name="Logger"/>
+    </sub-flow>
 	<sub-flow name="export_to_billing_system" doc:name="export_to_billing_system">
 		<data-mapper:transform config-ref="to_Billing_CSV" doc:name="to CSV">
 			<data-mapper:input-arguments>
@@ -101,7 +123,6 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 				<data-mapper:input-argument key="insurancePlan">#[sessionVars.insurance.plan.value()]</data-mapper:input-argument>
 			</data-mapper:input-arguments>
 		</data-mapper:transform>
-        <ldap:add config-ref="" doc:name="LDAP"/>
 		<object-to-string-transformer doc:name="Object to String" />
 		<tracking:custom-event event-name="billing_event" doc:name="Patient Billing">
 			<tracking:meta-data key="episodeId" value="#[payload.split(',')[1]]" />
@@ -110,27 +131,29 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 		<logger message="#[payload]" level="INFO" doc:name="Log CSV" />
 		<file:outbound-endpoint responseTimeout="10000" doc:name="/home/billing" connector-ref="FileConnector" path="/Users/nialdarbey/test/billing" />
 	</sub-flow>
-    <sub-flow name="invoke_ehr_web_service" doc:name="invoke_ehr_web_service">
-        <set-variable variableName="url" value="ehr/api/#[payload.procedure.department]/episodes" doc:name="Set Resource URL"/>
-        <set-payload value="#['&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;EhrRequest&gt;&lt;patientId&gt;' + sessionVars.patientId + '&lt;/patientId&gt;&lt;/EhrRequest&gt;'] " doc:name="EhrRequest"/>
-        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="9494" path="#[flowVars.url]" contentType="text/xml" doc:name="POST :9494/#[flowVars.url]"/>
-        <object-to-string-transformer doc:name="Object to String"/>
-        <tracking:custom-event event-name="new_ehr_episode" doc:name="EHR Episode">
-            <tracking:meta-data key="patientId" value="#[sessionVars.patientId]"/>
-            <tracking:meta-data key="episodeId" value="#[xpath('/ep:Episode/episodeId/text()').text]"/>
-        </tracking:custom-event>
-    </sub-flow>
-    <sub-flow name="invoke_insurance_web_service" doc:name="invoke_insurance_web_service">
-        <data-mapper:transform config-ref="AdmissionRequest_to_HospitalCoverRequest" doc:name="to HospitalCoverRequest"/>
-        <cxf:jaxws-client operation="verify" clientClass="com.mulesoft.summit.ins.InsuranceService_Service" port="InsuranceSOAP" enableMuleSoapHeaders="true" doc:name="InsuranceService Client">
-            <cxf:ws-security>
-                <cxf:ws-config>
-                    <cxf:property key="action" value="SAMLTokenUnsigned"/>
-                    <cxf:property key="samlPropFile" value="saml.properties"/>
-                    <cxf:property key="samlCallbackClass" value="com.mulesoft.summit.security.SAMLCallbackHandler"/>
-                </cxf:ws-config>
-            </cxf:ws-security>
-        </cxf:jaxws-client>
-        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="9393" path="approvals" doc:name="POST :9393/approvals"/>
-    </sub-flow>
+	<sub-flow name="invoke_ehr_web_service" doc:name="invoke_ehr_web_service">
+		<set-variable variableName="url" value="ehr/api/#[payload.procedure.department]/episodes" doc:name="Set Resource URL" />
+        <parse-template location="ehrRequest.template.txt" doc:name="ehrRequest"/>
+		<logger message="hello world" level="INFO" doc:name="Logger"/>
+		<http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="9494" path="#[flowVars.url]" contentType="text/xml" doc:name="POST :9494/#[flowVars.url]" />
+		<object-to-string-transformer doc:name="Object to String" />
+		<tracking:custom-event event-name="new_ehr_episode" doc:name="EHR Episode">
+			<tracking:meta-data key="patientId" value="#[sessionVars.patientId]" />
+			<tracking:meta-data key="episodeId" value="#[xpath('/ep:Episode/episodeId/text()').text]" />
+		</tracking:custom-event>
+        <logger message="#[payload.class +' epdisode id is ' + xpath('/ep:Episode/episodeId/text()').text]" level="INFO" doc:name="Logger"/>
+	</sub-flow>
+	<sub-flow name="invoke_insurance_web_service" doc:name="invoke_insurance_web_service">
+		<data-mapper:transform config-ref="AdmissionRequest_to_HospitalCoverRequest" doc:name="to HospitalCoverRequest" />
+		<cxf:jaxws-client operation="verify" clientClass="com.mulesoft.summit.ins.InsuranceService_Service" port="InsuranceSOAP" enableMuleSoapHeaders="true" doc:name="InsuranceService Client">
+			<cxf:ws-security>
+				<cxf:ws-config>
+					<cxf:property key="action" value="SAMLTokenUnsigned" />
+					<cxf:property key="samlPropFile" value="saml.properties" />
+					<cxf:property key="samlCallbackClass" value="com.mulesoft.summit.security.SAMLCallbackHandler" />
+				</cxf:ws-config>
+			</cxf:ws-security>
+		</cxf:jaxws-client>
+		<http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="9393" path="approvals" doc:name="POST :9393/approvals" />
+	</sub-flow>
 </mule>
